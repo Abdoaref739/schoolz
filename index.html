@@ -1,0 +1,3084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STEMPrep Pro - Master Your Exams</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #e2e2e2;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #00dbde;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .auth-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn {
+            background: transparent;
+            color: #00dbde;
+            border: 2px solid #00dbde;
+        }
+
+        .login-btn:hover {
+            background: #00dbde;
+            color: white;
+        }
+
+        .signup-btn {
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            color: white;
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 219, 222, 0.4);
+        }
+
+        .user-welcome {
+            color: #e2e2e2;
+            font-weight: 500;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 6rem 0 4rem;
+            color: white;
+            background: url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+            background-size: cover;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.2s both;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out 0.4s both;
+            cursor: pointer;
+            border: none;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .section {
+            padding: 4rem 0;
+            display: none;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: white;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            margin: 1rem auto 0;
+            border-radius: 2px;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .subject-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .subject-card:hover::before {
+            left: 100%;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .subject-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .english { color: #ff6b6b; }
+        .math { color: #4cc9f0; }
+        .science { color: #4ad66d; }
+        .iq { color: #b5179e; }
+        .coding { color: #f8961e; }
+        .history { color: #7209b7; }
+
+        .subject-card h3 {
+            margin-bottom: 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .subject-card p {
+            color: #e2e2e2;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .test-categories {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .test-category {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.8rem;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            color: white;
+        }
+
+        .test-category:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+
+        .test-count {
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .subject-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .subject-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 219, 222, 0.4);
+        }
+
+        .test-section {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .test-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            color: white;
+        }
+
+        .test-card:hover {
+            transform: translateY(-5px);
+            border-color: #00dbde;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .test-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .test-meta {
+            display: flex;
+            justify-content: space-between;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            color: #e2e2e2;
+        }
+
+        .difficulty {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .easy { background: rgba(40, 167, 69, 0.2); color: #d4edda; border: 1px solid rgba(40, 167, 69, 0.5); }
+        .medium { background: rgba(255, 193, 7, 0.2); color: #fff3cd; border: 1px solid rgba(255, 193, 7, 0.5); }
+        .hard { background: rgba(220, 53, 69, 0.2); color: #f8d7da; border: 1px solid rgba(220, 53, 69, 0.5); }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a1a2e;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .close {
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #00dbde;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .admin-panel, .user-dashboard {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-tab {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: #999;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .admin-tab.active {
+            color: #00dbde;
+            border-bottom-color: #00dbde;
+        }
+
+        .admin-content {
+            display: none;
+            color: white;
+        }
+
+        .admin-content.active {
+            display: block;
+        }
+
+        .item-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            color: white;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-view {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .news-section {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .news-content {
+            padding: 1.5rem;
+            color: white;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #e2e2e2;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .news-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .news-excerpt {
+            color: #e2e2e2;
+            line-height: 1.6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #e2e2e2;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .connection-status {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 200;
+            transition: all 0.3s ease;
+        }
+
+        .status-connected {
+            background: rgba(40, 167, 69, 0.2);
+            color: #d4edda;
+            border: 1px solid rgba(40, 167, 69, 0.5);
+        }
+
+        .status-disconnected {
+            background: rgba(220, 53, 69, 0.2);
+            color: #f8d7da;
+            border: 1px solid rgba(220, 53, 69, 0.5);
+        }
+
+        .status-connecting {
+            background: rgba(255, 193, 7, 0.2);
+            color: #fff3cd;
+            border: 1px solid rgba(255, 193, 7, 0.5);
+        }
+
+        .question-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .question-number {
+            color: #00dbde;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            color: white;
+        }
+
+        .option-button:hover {
+            border-color: #00dbde;
+            background: rgba(0, 219, 222, 0.1);
+        }
+
+        .option-button.selected {
+            border-color: #00dbde;
+            background: rgba(0, 219, 222, 0.2);
+            color: white;
+        }
+
+        .option-button.correct {
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.2);
+            color: white;
+        }
+
+        .option-button.incorrect {
+            border-color: #dc3545;
+            background: rgba(220, 53, 69, 0.2);
+            color: white;
+        }
+
+        .test-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .test-timer {
+            background: rgba(255, 107, 107, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            border: 1px solid rgba(255, 107, 107, 0.5);
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(#28a745 0% var(--score), rgba(255, 255, 255, 0.1) var(--score) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+
+        .score-circle::before {
+            content: '';
+            width: 80px;
+            height: 80px;
+            background: #1a1a2e;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .score-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            z-index: 1;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert-success {
+            background: rgba(40, 167, 69, 0.2);
+            color: #d4edda;
+            border: 1px solid rgba(40, 167, 69, 0.5);
+        }
+
+        .alert-error {
+            background: rgba(220, 53, 69, 0.2);
+            color: #f8d7da;
+            border: 1px solid rgba(220, 53, 69, 0.5);
+        }
+
+        .alert-info {
+            background: rgba(23, 162, 184, 0.2);
+            color: #d1ecf1;
+            border: 1px solid rgba(23, 162, 184, 0.5);
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .ai-assistant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+        }
+
+        .ai-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-button:hover {
+            transform: scale(1.1);
+        }
+
+        .ai-chatbox {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            background: #1a1a2e;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+            overflow: hidden;
+        }
+
+        .ai-header {
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            color: white;
+            padding: 1rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-close {
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .ai-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .ai-message {
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .ai-bot {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-right: auto;
+        }
+
+        .ai-user {
+            background: rgba(0, 219, 222, 0.2);
+            color: white;
+            margin-left: auto;
+        }
+
+        .ai-input {
+            display: flex;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .ai-input input {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+        }
+
+        .ai-input button {
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0 1.5rem;
+            margin-left: 0.5rem;
+            cursor: pointer;
+        }
+
+        .visitor-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .visitor-counter span {
+            margin-left: 0.5rem;
+            font-weight: bold;
+            color: #00dbde;
+        }
+
+        /* New styles for subscription and image questions */
+        .option-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .option-row input[type="text"] {
+            flex: 1;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: white;
+        }
+
+        .option-row label {
+            color: #e2e2e2;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .question-preview {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .question-image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+
+        .option-image-preview {
+            max-width: 100px;
+            max-height: 100px;
+            margin-right: 1rem;
+            border-radius: 5px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .loading {
+            animation: pulse 1.5s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1rem;
+            }
+
+            .admin-tabs {
+                flex-wrap: wrap;
+            }
+
+            .ai-chatbox {
+                width: 90%;
+                right: 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="connection-status status-connected" id="connectionStatus">
+        🟢 Ready
+    </div>
+
+    <div class="visitor-counter">
+        Visitors: <span id="visitorCount">0</span>
+    </div>
+
+    <div class="ai-assistant">
+        <div class="ai-chatbox" id="aiChatbox">
+            <div class="ai-header">
+                STEMPrep AI Assistant
+                <span class="ai-close" onclick="toggleAIChat()">×</span>
+            </div>
+            <div class="ai-messages" id="aiMessages">
+                <div class="ai-message ai-bot">
+                    Hello! I'm your STEMPrep AI assistant. How can I help you today?
+                </div>
+            </div>
+            <div class="ai-input">
+                <input type="text" id="aiInput" placeholder="Ask me anything about STEM...">
+                <button onclick="sendAIMessage()">Send</button>
+            </div>
+        </div>
+        <button class="ai-button" onclick="toggleAIChat()">🤖</button>
+    </div>
+
+    <header>
+        <nav class="container">
+            <div class="logo">schoolZ</div>
+            <ul class="nav-links">
+                <li><a onclick="showSection('home')">Home</a></li>
+                <li><a onclick="showSection('subjects')">Subjects</a></li>
+                <li><a onclick="showSection('tests')">Tests</a></li>
+                <li><a onclick="showSection('news')">News</a></li>
+                <li><a onclick="showSection('resources')">Resources</a></li>
+                <li><a onclick="showSection('subscription')">Subscription</a></li>
+                <li><a onclick="showSection('admin')" id="adminLink" style="display: none;">Admin</a></li>
+                <li><a onclick="showSection('dashboard')" id="dashboardLink" style="display: none;">Dashboard</a></li>
+            </ul>
+            <div class="auth-buttons" id="authButtons">
+                <button class="auth-btn login-btn" onclick="openModal('loginModal')">Login</button>
+                <button class="auth-btn signup-btn" onclick="openModal('signupModal')">Sign Up</button>
+            </div>
+            <div id="userGreeting" style="display: none;" class="user-welcome"></div>
+            <button id="logoutBtn" class="auth-btn login-btn" style="display: none;">Logout</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <h1>Master Your STEM Exams</h1>
+                <p>Comprehensive preparation with thousands of practice questions, real-time progress tracking, and AI-powered assistance to help you excel in your STEM subjects.</p>
+                <button onclick="showSection('subjects')" class="cta-button">Start Learning Now</button>
+            </div>
+        </section>
+
+        <section id="subjects" class="section">
+            <div class="container">
+                <h2 class="section-title">Choose Your Subject</h2>
+                <div class="subjects-grid">
+                    <div class="subject-card">
+                        <span class="subject-icon english">📚</span>
+                        <h3>English</h3>
+                        <p>Master grammar, vocabulary, reading comprehension, and writing skills with comprehensive exercises.</p>
+                        <div class="test-categories">
+                            <div class="test-category" onclick="loadTests('english', 'grammar')">
+                                <span>Grammar</span>
+                                <span class="test-count" id="grammar-count">52</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('english', 'vocabulary')">
+                                <span>Vocabulary</span>
+                                <span class="test-count" id="vocabulary-count">48</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('english', 'reading')">
+                                <span>Reading Comprehension</span>
+                                <span class="test-count" id="reading-count">35</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('english', 'writing')">
+                                <span>Writing Skills</span>
+                                <span class="test-count" id="writing-count">29</span>
+                            </div>
+                        </div>
+                        <button class="subject-button" onclick="loadAllTests('english')">View All English Tests</button>
+                    </div>
+
+                    <div class="subject-card">
+                        <span class="subject-icon math">📐</span>
+                        <h3>Mathematics</h3>
+                        <p>Master algebra, calculus, geometry, and statistics with comprehensive practice problems.</p>
+                        <div class="test-categories">
+                            <div class="test-category" onclick="loadTests('math', 'algebra')">
+                                <span>Algebra</span>
+                                <span class="test-count" id="algebra-count">45</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('math', 'calculus')">
+                                <span>Calculus</span>
+                                <span class="test-count" id="calculus-count">38</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('math', 'geometry')">
+                                <span>Geometry</span>
+                                <span class="test-count" id="geometry-count">32</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('math', 'statistics')">
+                                <span>Statistics</span>
+                                <span class="test-count" id="statistics-count">28</span>
+                            </div>
+                        </div>
+                        <button class="subject-button" onclick="loadAllTests('math')">View All Math Tests</button>
+                    </div>
+
+                    <div class="subject-card">
+                        <span class="subject-icon science">🧬</span>
+                        <h3>Science</h3>
+                        <p>Explore physics, chemistry, biology, and earth science with interactive experiments and visualizations.</p>
+                        <div class="test-categories">
+                            <div class="test-category" onclick="loadTests('science', 'physics')">
+                                <span>Physics</span>
+                                <span class="test-count" id="physics-count">42</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('science', 'chemistry')">
+                                <span>Chemistry</span>
+                                <span class="test-count" id="chemistry-count">39</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('science', 'biology')">
+                                <span>Biology</span>
+                                <span class="test-count" id="biology-count">36</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('science', 'earth')">
+                                <span>Earth Science</span>
+                                <span class="test-count" id="earth-count">28</span>
+                            </div>
+                        </div>
+                        <button class="subject-button" onclick="loadAllTests('science')">View All Science Tests</button>
+                    </div>
+
+                    <div class="subject-card">
+                        <span class="subject-icon iq">🧠</span>
+                        <h3>IQ Testing</h3>
+                        <p>Challenge your logical reasoning, pattern recognition, and problem-solving abilities with various IQ tests.</p>
+                        <div class="test-categories">
+                            <div class="test-category" onclick="loadTests('iq', 'logical')">
+                                <span>Logical Reasoning</span>
+                                <span class="test-count" id="logical-count">34</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('iq', 'patterns')">
+                                <span>Pattern Recognition</span>
+                                <span class="test-count" id="patterns-count">31</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('iq', 'spatial')">
+                                <span>Spatial Reasoning</span>
+                                <span class="test-count" id="spatial-count">27</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('iq', 'verbal')">
+                                <span>Verbal IQ</span>
+                                <span class="test-count" id="verbal-count">25</span>
+                            </div>
+                        </div>
+                        <button class="subject-button" onclick="loadAllTests('iq')">View All IQ Tests</button>
+                    </div>
+
+                    <div class="subject-card">
+                        <span class="subject-icon coding">💻</span>
+                        <h3>Coding</h3>
+                        <p>Learn programming concepts, algorithms, and data structures with interactive coding challenges.</p>
+                        <div class="test-categories">
+                            <div class="test-category" onclick="loadTests('coding', 'python')">
+                                <span>Python</span>
+                                <span class="test-count" id="python-count">38</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('coding', 'javascript')">
+                                <span>JavaScript</span>
+                                <span class="test-count" id="javascript-count">32</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('coding', 'algorithms')">
+                                <span>Algorithms</span>
+                                <span class="test-count" id="algorithms-count">29</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('coding', 'datastructures')">
+                                <span>Data Structures</span>
+                                <span class="test-count" id="datastructures-count">26</span>
+                            </div>
+                        </div>
+                        <button class="subject-button" onclick="loadAllTests('coding')">View All Coding Tests</button>
+                    </div>
+
+                    <div class="subject-card">
+                        <span class="subject-icon history">📜</span>
+                        <h3>History</h3>
+                        <p>Explore world history, important events, and historical figures through interactive timelines.</p>
+                        <div class="test-categories">
+                            <div class="test-category" onclick="loadTests('history', 'world')">
+                                <span>World History</span>
+                                <span class="test-count" id="world-count">31</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('history', 'american')">
+                                <span>American History</span>
+                                <span class="test-count" id="american-count">28</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('history', 'european')">
+                                <span>European History</span>
+                                <span class="test-count" id="european-count">25</span>
+                            </div>
+                            <div class="test-category" onclick="loadTests('history', 'ancient')">
+                                <span>Ancient Civilizations</span>
+                                <span class="test-count" id="ancient-count">22</span>
+                            </div>
+                        </div>
+                        <button class="subject-button" onclick="loadAllTests('history')">View All History Tests</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tests" class="section">
+            <div class="container">
+                <div class="test-section">
+                    <h2 class="section-title" style="color: white;">Practice Tests</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalQuestions">1,247</div>
+                            <div class="stat-label">Total Questions</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="completedTests">0</div>
+                            <div class="stat-label">Tests Completed</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="avgScore">N/A</div>
+                            <div class="stat-label">Average Score</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="timeSpent">0</div>
+                            <div class="stat-label">Hours Practiced</div>
+                        </div>
+                    </div>
+                    <div id="testList" class="test-grid">
+                        <!-- Tests will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="news" class="section">
+            <div class="container">
+                <div class="news-section">
+                    <h2 class="section-title" style="color: white;">Latest News & Updates</h2>
+                    <div id="newsGrid" class="news-grid">
+                        <!-- News will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="resources" class="section">
+            <div class="container">
+                <div class="test-section">
+                    <h2 class="section-title" style="color: white;">Learning Resources</h2>
+                    <div class="subjects-grid">
+                        <div class="subject-card">
+                            <h3>Video Tutorials</h3>
+                            <p>Access hundreds of video tutorials covering all STEM subjects from expert instructors.</p>
+                            <button class="subject-button">Browse Videos</button>
+                        </div>
+                        <div class="subject-card">
+                            <h3>Study Guides</h3>
+                            <p>Download comprehensive study guides and cheat sheets for quick reference.</p>
+                            <button class="subject-button">View Guides</button>
+                        </div>
+                        <div class="subject-card">
+                            <h3>Practice Worksheets</h3>
+                            <p>Printable worksheets with answer keys for additional practice.</p>
+                            <button class="subject-button">Get Worksheets</button>
+                        </div>
+                        <div class="subject-card">
+                            <h3>Interactive Tools</h3>
+                            <p>Use our interactive calculators, graphing tools, and simulations.</p>
+                            <button class="subject-button">Explore Tools</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="subscription" class="section">
+            <div class="container">
+                <div class="test-section">
+                    <h2 class="section-title" style="color: white;">Premium Subscription</h2>
+                    <div class="subjects-grid">
+                        <div class="subject-card">
+                            <h3>Basic</h3>
+                            <p>Free access to limited content</p>
+                            <ul style="text-align: left; margin: 1rem 0; color: #e2e2e2;">
+                                <li>10 tests per month</li>
+                                <li>Basic analytics</li>
+                                <li>Community support</li>
+                            </ul>
+                            <h4 style="margin: 1rem 0; color: white;">$0/month</h4>
+                            <button class="subject-button" onclick="selectSubscription('basic')">Current Plan</button>
+                        </div>
+                        <div class="subject-card" style="border: 2px solid #00dbde;">
+                            <h3>Premium</h3>
+                            <p>Full access to all content</p>
+                            <ul style="text-align: left; margin: 1rem 0; color: #e2e2e2;">
+                                <li>Unlimited tests</li>
+                                <li>Advanced analytics</li>
+                                <li>Priority support</li>
+                                <li>AI assistant</li>
+                                <li>Downloadable resources</li>
+                            </ul>
+                            <h4 style="margin: 1rem 0; color: white;">$9.99/month</h4>
+                            <button class="subject-button" onclick="selectSubscription('premium')">Upgrade Now</button>
+                        </div>
+                        <div class="subject-card">
+                            <h3>Family</h3>
+                            <p>For multiple users</p>
+                            <ul style="text-align: left; margin: 1rem 0; color: #e2e2e2;">
+                                <li>5 user accounts</li>
+                                <li>All premium features</li>
+                                <li>Family progress tracking</li>
+                                <li>Bulk discounts</li>
+                            </ul>
+                            <h4 style="margin: 1rem 0; color: white;">$24.99/month</h4>
+                            <button class="subject-button" onclick="selectSubscription('family')">Choose Family</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="admin" class="section admin-panel">
+            <div class="container">
+                <h2 class="section-title" style="color: white;">Admin Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalUsers">0</div>
+                        <div class="stat-label">Total Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="activeUsers">0</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="testsCreated">0</div>
+                        <div class="stat-label">Tests Created</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="siteVisitors">0</div>
+                        <div class="stat-label">Site Visitors</div>
+                    </div>
+                </div>
+                <div class="admin-tabs">
+                    <button class="admin-tab active" onclick="showAdminContent('manageTests')">Manage Tests</button>
+                    <button class="admin-tab" onclick="showAdminContent('manageNews')">Manage News</button>
+                    <button class="admin-tab" onclick="showAdminContent('manageUsers')">Manage Users</button>
+                    <button class="admin-tab" onclick="showAdminContent('analytics')">Analytics</button>
+                </div>
+
+                <div id="manageTests" class="admin-content active">
+                    <h3>Manage Tests</h3>
+                    <button class="subject-button" onclick="openModal('addTestModal')">Add New Test</button>
+                    <div class="alert" id="adminTestAlert"></div>
+                    <div id="testsList" class="item-list">
+                        <!-- Tests will be loaded here -->
+                    </div>
+                </div>
+
+                <div id="manageNews" class="admin-content">
+                    <h3>Manage News</h3>
+                    <button class="subject-button" onclick="openModal('addNewsModal')">Add New Article</button>
+                    <div class="alert" id="adminNewsAlert"></div>
+                    <div id="newsList" class="item-list">
+                        <!-- News will be loaded here -->
+                    </div>
+                </div>
+
+                <div id="manageUsers" class="admin-content">
+                    <h3>Manage Users</h3>
+                    <div class="alert" id="adminUserAlert"></div>
+                    <div id="usersList" class="item-list">
+                        <!-- Users will be loaded here -->
+                    </div>
+                </div>
+
+                <div id="analytics" class="admin-content">
+                    <h3>Website Analytics</h3>
+                    <div class="chart-container">
+                        <canvas id="visitorsChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="testsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard" class="section user-dashboard">
+            <div class="container">
+                <h2 class="section-title" style="color: white;">Welcome to Your Dashboard, <span id="dashboardUserName">User</span>!</h2>
+                <p>Track your progress and review your past tests.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="userTestsTaken">0</div>
+                        <div class="stat-label">Tests Taken</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="userAverageScore">N/A</div>
+                        <div class="stat-label">Your Average Score</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="userHighestScore">N/A</div>
+                        <div class="stat-label">Highest Score</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="userStreak">0</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="progressChart"></canvas>
+                </div>
+
+                <h3>Your Recent Activity</h3>
+                <div class="item-list" id="userActivityList">
+                    <p>No recent activity. Start a test today!</p>
+                </div>
+
+                <h3>Recommended Tests</h3>
+                <div class="test-grid" id="recommendedTests">
+                    <!-- Recommended tests will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Modals -->
+        <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Login</h2>
+                    <span class="close" onclick="closeModal('loginModal')">&times;</span>
+                </div>
+                <form id="loginForm" onsubmit="event.preventDefault(); handleLogin()">
+                    <div class="form-group">
+                        <label for="loginEmail">Email:</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password:</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="cta-button" style="width: 100%;">Login</button>
+                    <div class="alert" id="loginError"></div>
+                </form>
+            </div>
+        </div>
+
+        <div id="signupModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Sign Up</h2>
+                    <span class="close" onclick="closeModal('signupModal')">&times;</span>
+                </div>
+                <form id="signupForm" onsubmit="event.preventDefault(); handleSignup()">
+                    <div class="form-group">
+                        <label for="signupName">Full Name:</label>
+                        <input type="text" id="signupName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email:</label>
+                        <input type="email" id="signupEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password:</label>
+                        <input type="password" id="signupPassword" required>
+                    </div>
+                    <button type="submit" class="cta-button" style="width: 100%;">Sign Up</button>
+                    <div class="alert" id="signupError"></div>
+                </form>
+            </div>
+        </div>
+
+        <div id="addTestModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Add New Test</h2>
+                    <span class="close" onclick="closeModal('addTestModal')">&times;</span>
+                </div>
+                <form id="testForm" onsubmit="event.preventDefault(); saveTest()">
+                    <div class="form-group">
+                        <label for="testName">Test Name:</label>
+                        <input type="text" id="testName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="testSubject">Subject:</label>
+                        <select id="testSubject" required>
+                            <option value="">Select Subject</option>
+                            <option value="english">English</option>
+                            <option value="math">Mathematics</option>
+                            <option value="science">Science</option>
+                            <option value="iq">IQ Testing</option>
+                            <option value="coding">Coding</option>
+                            <option value="history">History</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="testCategory">Category:</label>
+                        <input type="text" id="testCategory" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="testDifficulty">Difficulty:</label>
+                        <select id="testDifficulty" required>
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="testDescription">Description:</label>
+                        <textarea id="testDescription" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Questions:</label>
+                        <div id="questionsContainer">
+                            <!-- Questions will be added here -->
+                        </div>
+                        <button type="button" class="subject-button" style="margin-top: 1rem;" onclick="addQuestionField()">Add Question</button>
+                    </div>
+                    <button type="submit" class="cta-button" style="width: 100%;">Save Test</button>
+                    <div class="alert" id="testError"></div>
+                </form>
+            </div>
+        </div>
+
+        <div id="questionModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Add Question</h2>
+                    <span class="close" onclick="closeModal('questionModal')">&times;</span>
+                </div>
+                <form id="questionForm">
+                    <div class="form-group">
+                        <label for="questionText">Question Text:</label>
+                        <textarea id="questionText" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="questionImage">Image (optional):</label>
+                        <input type="file" id="questionImage" accept="image/*">
+                        <small style="color: #e2e2e2;">Maximum size: 2MB</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Options:</label>
+                        <div id="optionsContainer">
+                            <div class="option-row">
+                                <input type="text" placeholder="Option A" class="option-text" required>
+                                <label><input type="radio" name="correctOption" value="A" required> Correct</label>
+                            </div>
+                            <div class="option-row">
+                                <input type="text" placeholder="Option B" class="option-text" required>
+                                <input type="file" class="option-image" accept="image/*">
+                                <label><input type="radio" name="correctOption" value="B"> Correct</label>
+                            </div>
+                            <div class="option-row">
+                                <input type="text" placeholder="Option C" class="option-text">
+                                <label><input type="radio" name="correctOption" value="C"> Correct</label>
+                            </div>
+                            <div class="option-row">
+                                <input type="text" placeholder="Option D" class="option-text">
+                                <label><input type="radio" name="correctOption" value="D"> Correct</label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="cta-button" style="width: 100%;" onclick="saveQuestion()">Save Question</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="addNewsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Add News Article</h2>
+                    <span class="close" onclick="closeModal('addNewsModal')">&times;</span>
+                </div>
+                <form id="newsForm" onsubmit="event.preventDefault(); saveNewsArticle()">
+                    <div class="form-group">
+                        <label for="newsTitle">Title:</label>
+                        <input type="text" id="newsTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newsDate">Date:</label>
+                        <input type="date" id="newsDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newsAuthor">Author:</label>
+                        <input type="text" id="newsAuthor" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newsExcerpt">Excerpt:</label>
+                        <textarea id="newsExcerpt" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="newsContent">Content:</label>
+                        <textarea id="newsContent" required></textarea>
+                    </div>
+                    <button type="submit" class="cta-button" style="width: 100%;">Save Article</button>
+                    <div class="alert" id="newsError"></div>
+                </form>
+            </div>
+        </div>
+
+        <div id="takeTestModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="testTitle">Practice Test</h2>
+                    <span class="close" onclick="endTest()">&times;</span>
+                </div>
+                <div id="quizContainer">
+                    <div class="question-container">
+                        <div class="question-number">Question <span id="currentQuestionNumber">1</span> of <span id="totalQuestionsInTest">5</span></div>
+                        <p class="question-text" id="questionTextDisplay">What is the capital of France?</p>
+                        <div class="options-grid" id="optionsGrid">
+                            <button class="option-button" data-option-key="A" onclick="selectOption('A')">A. London</button>
+                            <button class="option-button" data-option-key="B" onclick="selectOption('B')">B. Paris</button>
+                            <button class="option-button" data-option-key="C" onclick="selectOption('C')">C. Berlin</button>
+                            <button class="option-button" data-option-key="D" onclick="selectOption('D')">D. Madrid</button>
+                        </div>
+                    </div>
+                    <div class="test-navigation">
+                        <button class="subject-button" id="prevQuestionBtn" style="display: none;">Previous</button>
+                        <div class="test-timer">Time Left: <span id="timerDisplay">05:00</span></div>
+                        <button class="subject-button" id="nextQuestionBtn" onclick="nextQuestion()">Next</button>
+                        <button class="cta-button" id="submitTestBtn" style="display: none;" onclick="submitTest()">Submit Test</button>
+                    </div>
+                </div>
+                <div id="testResult" style="display: none;">
+                    <h3 style="text-align: center; margin-bottom: 1.5rem;">Test Results</h3>
+                    <div class="result-card">
+                        <div class="score-circle" id="scoreCircle" style="--score: 80%;">
+                            <span class="score-text" id="scoreText">80%</span>
+                        </div>
+                        <p>You answered <span id="correctAnswersCount">4</span> out of <span id="totalQuestionsAnswered">5</span> questions correctly.</p>
+                        <div class="chart-container" style="margin: 2rem 0;">
+                            <canvas id="testResultChart"></canvas>
+                        </div>
+                        <button class="subject-button" onclick="retakeTest()">Retake Test</button>
+                        <button class="subject-button" onclick="closeModal('takeTestModal')">Back to Tests</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 2rem;">
+                <div style="flex: 1; min-width: 200px; margin-bottom: 1rem;">
+                    <h3 style="color: white; margin-bottom: 1rem;">STEMPrep Pro</h3>
+                    <p style="color: #e2e2e2;">Comprehensive STEM exam preparation platform with AI-powered learning tools.</p>
+                </div>
+                <div style="flex: 1; min-width: 200px; margin-bottom: 1rem;">
+                    <h3 style="color: white; margin-bottom: 1rem;">Quick Links</h3>
+                    <ul style="list-style: none;">
+                        <li><a href="#" onclick="showSection('home')" style="color: #e2e2e2; text-decoration: none; display: block; margin-bottom: 0.5rem;">Home</a></li>
+                        <li><a href="#" onclick="showSection('subjects')" style="color: #e2e2e2; text-decoration: none; display: block; margin-bottom: 0.5rem;">Subjects</a></li>
+                        <li><a href="#" onclick="showSection('tests')" style="color: #e2e2e2; text-decoration: none; display: block; margin-bottom: 0.5rem;">Tests</a></li>
+                        <li><a href="#" onclick="showSection('resources')" style="color: #e2e2e2; text-decoration: none; display: block; margin-bottom: 0.5rem;">Resources</a></li>
+                        <li><a href="#" onclick="showSection('subscription')" style="color: #e2e2e2; text-decoration: none; display: block; margin-bottom: 0.5rem;">Subscription</a></li>
+                    </ul>
+                </div>
+                <div style="flex: 1; min-width: 200px; margin-bottom: 1rem;">
+                    <h3 style="color: white; margin-bottom: 1rem;">Contact Us</h3>
+                    <p style="color: #e2e2e2; margin-bottom: 0.5rem;">Email: Abdoarefg@gmail.com</p>
+                    <p style="color: #e2e2e2; margin-bottom: 0.5rem;">Phone: (+20) 01006979203</p>
+                </div>
+                <div style="flex: 1; min-width: 200px; margin-bottom: 1rem;">
+                    <h3 style="color: white; margin-bottom: 1rem;">Follow Us</h3>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="#" style="color: #e2e2e2; font-size: 1.5rem;">📱</a>
+                        <a href="#" style="color: #e2e2e2; font-size: 1.5rem;">📘</a>
+                        <a href="#" style="color: #e2e2e2; font-size: 1.5rem;">📸</a>
+                        <a href="#" style="color: #e2e2e2; font-size: 1.5rem;">🐦</a>
+                    </div>
+                </div>
+            </div>
+            <p style="color: #e2e2e2; text-align: center;">&copy; 2023 STEMPrep Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data storage with localStorage persistence
+        let tests = JSON.parse(localStorage.getItem('stemprep_tests')) || [];
+        let newsArticles = JSON.parse(localStorage.getItem('stemprep_news')) || [];
+        let users = JSON.parse(localStorage.getItem('stemprep_users')) || [];
+        let testResults = JSON.parse(localStorage.getItem('stemprep_test_results')) || [];
+        let currentUser = null;
+        let isAdmin = false;
+        let currentTest = null;
+        let currentQuestionIndex = 0;
+        let selectedOption = null;
+        let timerInterval = null;
+        let timeLeft = 300; // 5 minutes in seconds
+        let visitorCount = parseInt(localStorage.getItem('stemprep_visitor_count')) || 0;
+        let currentQuestions = [];
+        let editingQuestionIndex = -1;
+
+        // Admin credentials
+        const ADMIN_EMAIL = "admin@stempreppro.com";
+        const ADMIN_PASSWORD = "admin123";
+
+        // DOM Content Loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize visitor count
+            visitorCount++;
+            localStorage.setItem('stemprep_visitor_count', visitorCount.toString());
+            document.getElementById('visitorCount').textContent = visitorCount;
+            
+            // Load sample data if empty
+            if (tests.length === 0 || newsArticles.length === 0) {
+                loadSampleData();
+            }
+            
+            // Set up event listeners
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+            document.getElementById('prevQuestionBtn').addEventListener('click', prevQuestion);
+            document.getElementById('aiInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') sendAIMessage();
+            });
+            
+            // Show home section by default
+            showSection('home');
+            
+            // Initialize charts
+            initializeCharts();
+        });
+
+        // Load sample data
+        function loadSampleData() {
+            if (tests.length === 0) {
+                localStorage.setItem('stemprep_tests', JSON.stringify(tests));
+            }
+            
+            if (newsArticles.length === 0) {
+                newsArticles = [
+                    {
+                        id: 'news1',
+                        title: 'New Math Tests Added',
+                        date: new Date().toISOString().split('T')[0],
+                        author: 'Admin',
+                        excerpt: 'We have added new math tests to our collection.',
+                        content: 'We are excited to announce the addition of 10 new math tests covering algebra, geometry, and calculus. These tests include interactive questions and detailed explanations to help you master mathematical concepts.'
+                    }
+                ];
+                localStorage.setItem('stemprep_news', JSON.stringify(newsArticles));
+            }
+            
+            if (users.length === 0) {
+                users = [
+                    {
+                        id: 'admin1',
+                        name: 'Admin',
+                        email: ADMIN_EMAIL,
+                        password: ADMIN_PASSWORD,
+                        role: 'admin',
+                        joinDate: new Date().toISOString()
+                    }
+                ];
+                localStorage.setItem('stemprep_users', JSON.stringify(users));
+            }
+            
+            loadTests();
+            loadNews();
+        }
+
+        // Initialize charts
+        function initializeCharts() {
+            // Progress chart for dashboard
+            const progressCtx = document.getElementById('progressChart').getContext('2d');
+            new Chart(progressCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Your Progress',
+                        data: [65, 59, 80, 81, 76, 85],
+                        borderColor: '#00dbde',
+                        backgroundColor: 'rgba(0, 219, 222, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#e2e2e2'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#e2e2e2'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#e2e2e2'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Visitors chart for admin
+            const visitorsCtx = document.getElementById('visitorsChart').getContext('2d');
+            new Chart(visitorsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Monthly Visitors',
+                        data: [1200, 1900, 1500, 2000, 1800, 2200],
+                        backgroundColor: 'rgba(0, 219, 222, 0.5)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#e2e2e2'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#e2e2e2'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#e2e2e2'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Tests chart for admin
+            const testsCtx = document.getElementById('testsChart').getContext('2d');
+            new Chart(testsCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Math', 'Science', 'English', 'IQ', 'Coding', 'History'],
+                    datasets: [{
+                        data: [12, 19, 8, 5, 7, 3],
+                        backgroundColor: [
+                            '#4cc9f0',
+                            '#4ad66d',
+                            '#ff6b6b',
+                            '#b5179e',
+                            '#f8961e',
+                            '#7209b7'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#e2e2e2'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Section navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('main section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show the selected section
+            document.getElementById(sectionId).style.display = 'block';
+            
+            // Load data if needed
+            if (sectionId === 'tests') {
+                loadTests();
+            } else if (sectionId === 'news') {
+                loadNews();
+            } else if (sectionId === 'admin' && isAdmin) {
+                loadAdminData();
+            } else if (sectionId === 'dashboard' && currentUser) {
+                loadDashboard();
+            }
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            const form = document.querySelector(`#${modalId} form`);
+            if (form) form.reset();
+        }
+
+        // Authentication
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                showAlert('loginError', 'Please enter both email and password', 'error');
+                return;
+            }
+            
+            // Check for admin login
+            if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+                currentUser = { 
+                    id: 'admin1',
+                    name: 'Admin',
+                    email: email,
+                    role: 'admin',
+                    joinDate: new Date().toISOString()
+                };
+                isAdmin = true;
+                document.getElementById('adminLink').style.display = 'block';
+            } else {
+                // Check regular users
+                const user = users.find(u => u.email === email && u.password === password);
+                if (user) {
+                    currentUser = user;
+                    isAdmin = false;
+                } else {
+                    showAlert('loginError', 'Invalid email or password', 'error');
+                    return;
+                }
+            }
+            
+            // Update UI
+            document.getElementById('userGreeting').textContent = `Welcome, ${currentUser.name || currentUser.email}`;
+            document.getElementById('userGreeting').style.display = 'block';
+            document.getElementById('authButtons').style.display = 'none';
+            document.getElementById('logoutBtn').style.display = 'block';
+            document.getElementById('dashboardLink').style.display = 'block';
+            
+            closeModal('loginModal');
+            showSection('home');
+            
+            // Update visitor stats
+            updateVisitorStats();
+        }
+
+        function handleSignup() {
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            if (!name || !email || !password) {
+                showAlert('signupError', 'Please fill all required fields', 'error');
+                return;
+            }
+            
+            // Check if user already exists
+            if (users.some(u => u.email === email)) {
+                showAlert('signupError', 'Email already registered', 'error');
+                return;
+            }
+            
+            // Create new user
+            const newUser = {
+                id: 'user_' + Date.now(),
+                name: name,
+                email: email,
+                password: password,
+                role: 'user',
+                joinDate: new Date().toISOString()
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('stemprep_users', JSON.stringify(users));
+            
+            showAlert('signupError', 'Account created successfully! Please login.', 'success');
+            setTimeout(() => {
+                closeModal('signupModal');
+                openModal('loginModal');
+            }, 1500);
+        }
+
+        function logout() {
+            currentUser = null;
+            isAdmin = false;
+            document.getElementById('userGreeting').style.display = 'none';
+            document.getElementById('authButtons').style.display = 'flex';
+            document.getElementById('logoutBtn').style.display = 'none';
+            document.getElementById('adminLink').style.display = 'none';
+            document.getElementById('dashboardLink').style.display = 'none';
+            showSection('home');
+        }
+
+        // Subscription functions
+        function selectSubscription(plan) {
+            if (!currentUser) {
+                showAlert('loginError', 'Please login to subscribe', 'error');
+                openModal('loginModal');
+                return;
+            }
+            
+            if (plan === 'basic') {
+                alert('You are already on the Basic plan');
+            } else {
+                alert(`Thank you for choosing ${plan} plan! Payment processing would be implemented here.`);
+                // In a real app, you would integrate with a payment processor here
+            }
+        }
+
+        // Test functions
+        function loadTests(subject = null, category = null) {
+            const testList = document.getElementById('testList');
+            testList.innerHTML = '';
+            
+            let filteredTests = tests;
+            if (subject) {
+                filteredTests = filteredTests.filter(test => test.subject === subject);
+            }
+            if (category) {
+                filteredTests = filteredTests.filter(test => test.category === category);
+            }
+            
+            if (filteredTests.length === 0) {
+                testList.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #e2e2e2;">No tests found. Check back later!</p>';
+                return;
+            }
+            
+            filteredTests.forEach(test => {
+                const testCard = document.createElement('div');
+                testCard.className = 'test-card';
+                testCard.innerHTML = `
+                    <span class="test-icon">${getSubjectIcon(test.subject)}</span>
+                    <h3>${test.name}</h3>
+                    <p>${test.subject.charAt(0).toUpperCase() + test.subject.slice(1)} - ${test.category}</p>
+                    <div class="test-meta">
+                        <span>Questions: ${test.questions.length}</span>
+                        <span class="difficulty ${test.difficulty}">${test.difficulty}</span>
+                    </div>
+                    <button class="subject-button" onclick="startTest('${test.id}')">Start Test</button>
+                `;
+                testList.appendChild(testCard);
+            });
+        }
+
+        function loadAllTests(subject) {
+            showSection('tests');
+            loadTests(subject);
+        }
+
+        function loadAdminTests() {
+            const testsList = document.getElementById('testsList');
+            testsList.innerHTML = '';
+            
+            if (tests.length === 0) {
+                testsList.innerHTML = '<p style="text-align: center; color: #e2e2e2;">No tests created yet.</p>';
+                return;
+            }
+            
+            tests.forEach(test => {
+                const testItem = document.createElement('div');
+                testItem.className = 'item';
+                testItem.innerHTML = `
+                    <div>
+                        <strong>${test.name}</strong>
+                        <p><small>${test.subject} - ${test.category} (${test.difficulty})</small></p>
+                        <p><small>Questions: ${test.questions.length}</small></p>
+                        <p><small>${test.description}</small></p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-small btn-edit" onclick="editTest('${test.id}')">Edit</button>
+                        <button class="btn-small btn-delete" onclick="deleteTest('${test.id}')">Delete</button>
+                    </div>
+                `;
+                testsList.appendChild(testItem);
+            });
+        }
+
+        function addQuestionField() {
+            editingQuestionIndex = -1;
+            document.getElementById('questionForm').reset();
+            openModal('questionModal');
+        }
+
+        function saveQuestion() {
+            const questionText = document.getElementById('questionText').value;
+            const questionImage = document.getElementById('questionImage').files[0];
+            const options = [];
+            const correctAnswer = document.querySelector('input[name="correctOption"]:checked').value;
+            
+            // Get all options
+            const optionElements = document.querySelectorAll('.option-row');
+            optionElements.forEach((row, index) => {
+                const optionKey = String.fromCharCode(65 + index); // A, B, C, D
+                const optionText = row.querySelector('.option-text').value;
+                const optionImage = row.querySelector('.option-image').files[0];
+                
+                if (optionText) {
+                    options.push({
+                        key: optionKey,
+                        text: optionText,
+                        image: optionImage ? URL.createObjectURL(optionImage) : null
+                    });
+                }
+            });
+            
+            if (!questionText || options.length < 2 || !correctAnswer) {
+                alert('Please provide question text, at least 2 options, and select the correct answer');
+                return;
+            }
+            
+            const question = {
+                text: questionText,
+                image: questionImage ? URL.createObjectURL(questionImage) : null,
+                options: {},
+                correctAnswer: correctAnswer
+            };
+            
+            options.forEach(opt => {
+                question.options[opt.key] = {
+                    text: opt.text,
+                    image: opt.image
+                };
+            });
+            
+            if (editingQuestionIndex >= 0) {
+                currentQuestions[editingQuestionIndex] = question;
+            } else {
+                currentQuestions.push(question);
+            }
+            
+            renderQuestionsPreview();
+            closeModal('questionModal');
+        }
+
+        function renderQuestionsPreview() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            
+            currentQuestions.forEach((question, index) => {
+                const preview = document.createElement('div');
+                preview.className = 'question-preview';
+                
+                let html = `<strong>Question ${index + 1}</strong>`;
+                html += `<p>${question.text}</p>`;
+                
+                if (question.image) {
+                    html += `<img src="${question.image}" class="question-image-preview">`;
+                }
+                
+                html += '<div style="margin-top: 1rem;"><strong>Options:</strong>';
+                
+                for (const [key, option] of Object.entries(question.options)) {
+                    html += `<div style="display: flex; align-items: center; margin-top: 0.5rem;">`;
+                    if (option.image) {
+                        html += `<img src="${option.image}" class="option-image-preview">`;
+                    }
+                    html += `<span>${key}. ${option.text} ${key === question.correctAnswer ? ' (Correct)' : ''}</span>`;
+                    html += `</div>`;
+                }
+                
+                html += `</div>`;
+                html += `<div style="margin-top: 1rem;">
+                    <button class="btn-small btn-edit" onclick="editQuestion(${index})">Edit</button>
+                    <button class="btn-small btn-delete" onclick="deleteQuestion(${index})">Delete</button>
+                </div>`;
+                
+                preview.innerHTML = html;
+                container.appendChild(preview);
+            });
+        }
+
+        function editQuestion(index) {
+            editingQuestionIndex = index;
+            const question = currentQuestions[index];
+            
+            document.getElementById('questionText').value = question.text;
+            // Note: Can't set file input value programmatically for security reasons
+            
+            // Reset options
+            const optionElements = document.querySelectorAll('.option-row');
+            optionElements.forEach((row, i) => {
+                const optionKey = String.fromCharCode(65 + i);
+                const option = question.options[optionKey];
+                
+                if (option) {
+                    row.querySelector('.option-text').value = option.text;
+                    // Can't set file input, but we can show the existing image in the preview
+                } else {
+                    row.querySelector('.option-text').value = '';
+                }
+                
+                // Set correct answer radio
+                if (optionKey === question.correctAnswer) {
+                    row.querySelector('input[type="radio"]').checked = true;
+                }
+            });
+            
+            openModal('questionModal');
+        }
+
+        function deleteQuestion(index) {
+            if (confirm('Are you sure you want to delete this question?')) {
+                currentQuestions.splice(index, 1);
+                renderQuestionsPreview();
+            }
+        }
+
+        function saveTest() {
+            const name = document.getElementById('testName').value;
+            const subject = document.getElementById('testSubject').value;
+            const category = document.getElementById('testCategory').value;
+            const difficulty = document.getElementById('testDifficulty').value;
+            const description = document.getElementById('testDescription').value;
+            
+            if (!name || !subject || !category || !difficulty || !description) {
+                showAlert('testError', 'Please fill all required fields', 'error');
+                return;
+            }
+            
+            if (currentQuestions.length === 0) {
+                showAlert('testError', 'Please add at least one question', 'error');
+                return;
+            }
+            
+            const newTest = {
+                id: `${subject}_${Date.now()}`,
+                name: name,
+                subject: subject,
+                category: category,
+                difficulty: difficulty,
+                description: description,
+                questions: currentQuestions
+            };
+            
+            tests.push(newTest);
+            localStorage.setItem('stemprep_tests', JSON.stringify(tests));
+            
+            // Reset form
+            currentQuestions = [];
+            document.getElementById('testForm').reset();
+            document.getElementById('questionsContainer').innerHTML = '';
+            
+            loadTests();
+            loadAdminTests();
+            closeModal('addTestModal');
+            showAlert('adminTestAlert', 'Test added successfully!', 'success');
+        }
+
+        function editTest(testId) {
+            const test = tests.find(t => t.id === testId);
+            if (test) {
+                document.getElementById('testName').value = test.name;
+                document.getElementById('testSubject').value = test.subject;
+                document.getElementById('testCategory').value = test.category;
+                document.getElementById('testDifficulty').value = test.difficulty;
+                document.getElementById('testDescription').value = test.description;
+                
+                // Load questions for editing
+                currentQuestions = [...test.questions];
+                renderQuestionsPreview();
+                
+                openModal('addTestModal');
+            }
+        }
+
+        function deleteTest(testId) {
+            if (confirm('Are you sure you want to delete this test?')) {
+                tests = tests.filter(test => test.id !== testId);
+                localStorage.setItem('stemprep_tests', JSON.stringify(tests));
+                loadTests();
+                loadAdminTests();
+                showAlert('adminTestAlert', 'Test deleted successfully!', 'success');
+            }
+        }
+
+        // News functions
+        function loadNews() {
+            const newsGrid = document.getElementById('newsGrid');
+            newsGrid.innerHTML = '';
+            
+            if (newsArticles.length === 0) {
+                newsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #e2e2e2;">No news articles found.</p>';
+                return;
+            }
+            
+            // Sort by date (newest first)
+            const sortedNews = [...newsArticles].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            sortedNews.forEach(article => {
+                const newsCard = document.createElement('div');
+                newsCard.className = 'news-card';
+                newsCard.innerHTML = `
+                    <div class="news-image">📰</div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span>${new Date(article.date).toLocaleDateString()}</span>
+                            <span>By ${article.author}</span>
+                        </div>
+                        <h3 class="news-title">${article.title}</h3>
+                        <p class="news-excerpt">${article.excerpt}</p>
+                        <button class="subject-button" style="width: 100%; margin-top: 1rem;" onclick="viewNewsArticle('${article.id}')">Read More</button>
+                    </div>
+                `;
+                newsGrid.appendChild(newsCard);
+            });
+        }
+
+        function viewNewsArticle(articleId) {
+            const article = newsArticles.find(a => a.id === articleId);
+            if (!article) return;
+            
+            const modalContent = `
+                <div class="modal-header">
+                    <h2>${article.title}</h2>
+                    <span class="close" onclick="closeModal('newsViewModal')">&times;</span>
+                </div>
+                <div style="padding: 1rem; color: white;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; color: #e2e2e2;">
+                        <span>By ${article.author}</span>
+                        <span>${new Date(article.date).toLocaleDateString()}</span>
+                    </div>
+                    <div style="line-height: 1.6;">
+                        ${article.content}
+                    </div>
+                </div>
+            `;
+            
+            // Create or update modal
+            let modal = document.getElementById('newsViewModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'newsViewModal';
+                modal.className = 'modal';
+                document.body.appendChild(modal);
+            }
+            
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 800px;">
+                    ${modalContent}
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        function loadAdminNews() {
+            const newsList = document.getElementById('newsList');
+            newsList.innerHTML = '';
+            
+            if (newsArticles.length === 0) {
+                newsList.innerHTML = '<p style="text-align: center; color: #e2e2e2;">No news articles created yet.</p>';
+                return;
+            }
+            
+            newsArticles.forEach(article => {
+                const newsItem = document.createElement('div');
+                newsItem.className = 'item';
+                newsItem.innerHTML = `
+                    <div>
+                        <strong>${article.title}</strong>
+                        <p><small>By ${article.author} on ${new Date(article.date).toLocaleDateString()}</small></p>
+                        <p>${article.excerpt.substring(0, 50)}...</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-small btn-view" onclick="viewNewsArticle('${article.id}')">View</button>
+                        <button class="btn-small btn-edit" onclick="editNews('${article.id}')">Edit</button>
+                        <button class="btn-small btn-delete" onclick="deleteNews('${article.id}')">Delete</button>
+                    </div>
+                `;
+                newsList.appendChild(newsItem);
+            });
+        }
+
+        function saveNewsArticle() {
+            const title = document.getElementById('newsTitle').value;
+            const date = document.getElementById('newsDate').value;
+            const author = document.getElementById('newsAuthor').value;
+            const excerpt = document.getElementById('newsExcerpt').value;
+            const content = document.getElementById('newsContent').value;
+            
+            if (!title || !date || !author || !excerpt || !content) {
+                showAlert('newsError', 'Please fill all required fields', 'error');
+                return;
+            }
+            
+            const newArticle = {
+                id: `news_${Date.now()}`,
+                title: title,
+                date: date,
+                author: author,
+                excerpt: excerpt,
+                content: content
+            };
+            
+            newsArticles.push(newArticle);
+            localStorage.setItem('stemprep_news', JSON.stringify(newsArticles));
+            loadNews();
+            loadAdminNews();
+            closeModal('addNewsModal');
+            showAlert('adminNewsAlert', 'News article added successfully!', 'success');
+        }
+
+        function editNews(articleId) {
+            const article = newsArticles.find(a => a.id === articleId);
+            if (article) {
+                document.getElementById('newsTitle').value = article.title;
+                document.getElementById('newsDate').value = article.date;
+                document.getElementById('newsAuthor').value = article.author;
+                document.getElementById('newsExcerpt').value = article.excerpt;
+                document.getElementById('newsContent').value = article.content;
+                openModal('addNewsModal');
+            }
+        }
+
+        function deleteNews(articleId) {
+            if (confirm('Are you sure you want to delete this news article?')) {
+                newsArticles = newsArticles.filter(article => article.id !== articleId);
+                localStorage.setItem('stemprep_news', JSON.stringify(newsArticles));
+                loadNews();
+                loadAdminNews();
+                showAlert('adminNewsAlert', 'News article deleted successfully!', 'success');
+            }
+        }
+
+        // Test taking functions
+        function startTest(testId) {
+            currentTest = tests.find(test => test.id === testId);
+            if (!currentTest) return;
+            
+            currentQuestionIndex = 0;
+            document.getElementById('testTitle').textContent = currentTest.name;
+            document.getElementById('totalQuestionsInTest').textContent = currentTest.questions.length;
+            
+            // Reset timer
+            timeLeft = 300;
+            updateTimerDisplay();
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+            
+            // Show first question
+            displayQuestion();
+            openModal('takeTestModal');
+        }
+
+        function displayQuestion() {
+            const question = currentTest.questions[currentQuestionIndex];
+            document.getElementById('currentQuestionNumber').textContent = currentQuestionIndex + 1;
+            
+            const questionTextElement = document.getElementById('questionTextDisplay');
+            questionTextElement.innerHTML = question.text;
+            
+            // Add image if exists
+            if (question.image) {
+                questionTextElement.innerHTML += `<div style="margin: 1rem 0;"><img src="${question.image}" style="max-width: 100%; max-height: 200px; border-radius: 5px;"></div>`;
+            }
+            
+            const optionsGrid = document.getElementById('optionsGrid');
+            optionsGrid.innerHTML = '';
+            
+            // Create option buttons
+            for (const [key, option] of Object.entries(question.options)) {
+                const optionButton = document.createElement('button');
+                optionButton.className = 'option-button';
+                
+                let optionContent = `${key}. ${option.text}`;
+                if (option.image) {
+                    optionContent += `<div style="margin-top: 0.5rem;"><img src="${option.image}" style="max-width: 100px; max-height: 100px; border-radius: 5px;"></div>`;
+                }
+                
+                optionButton.innerHTML = optionContent;
+                optionButton.dataset.optionKey = key;
+                optionButton.onclick = function() { selectOption(key); };
+                optionsGrid.appendChild(optionButton);
+            }
+            
+            // Update navigation buttons
+            document.getElementById('prevQuestionBtn').style.display = currentQuestionIndex > 0 ? 'inline-block' : 'none';
+            document.getElementById('nextQuestionBtn').style.display = currentQuestionIndex < currentTest.questions.length - 1 ? 'inline-block' : 'none';
+            document.getElementById('submitTestBtn').style.display = currentQuestionIndex === currentTest.questions.length - 1 ? 'inline-block' : 'none';
+        }
+
+        function selectOption(optionKey) {
+            selectedOption = optionKey;
+            
+            // Highlight selected option
+            const options = document.querySelectorAll('#optionsGrid .option-button');
+            options.forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.optionKey === optionKey) {
+                    option.classList.add('selected');
+                }
+            });
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < currentTest.questions.length - 1) {
+                currentQuestionIndex++;
+                selectedOption = null;
+                displayQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                selectedOption = null;
+                displayQuestion();
+            }
+        }
+
+        function submitTest() {
+            clearInterval(timerInterval);
+            
+            // Calculate score
+            const totalQuestions = currentTest.questions.length;
+            const correctAnswers = Math.floor(Math.random() * (totalQuestions - 1)) + 1; // Random for demo
+            const score = Math.round((correctAnswers / totalQuestions) * 100);
+            
+            // Save test result if user is logged in
+            if (currentUser) {
+                const testResult = {
+                    id: 'result_' + Date.now(),
+                    userId: currentUser.id,
+                    testId: currentTest.id,
+                    testName: currentTest.name,
+                    score: score,
+                    correctAnswers: correctAnswers,
+                    totalQuestions: totalQuestions,
+                    date: new Date().toISOString()
+                };
+                
+                testResults.push(testResult);
+                localStorage.setItem('stemprep_test_results', JSON.stringify(testResults));
+            }
+            
+            // Display results
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('testResult').style.display = 'block';
+            document.getElementById('scoreText').textContent = `${score}%`;
+            document.getElementById('scoreCircle').style.setProperty('--score', `${score}%`);
+            document.getElementById('correctAnswersCount').textContent = correctAnswers;
+            document.getElementById('totalQuestionsAnswered').textContent = totalQuestions;
+            
+            // Create result chart
+            const resultCtx = document.getElementById('testResultChart').getContext('2d');
+            new Chart(resultCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Correct', 'Incorrect'],
+                    datasets: [{
+                        data: [correctAnswers, totalQuestions - correctAnswers],
+                        backgroundColor: [
+                            '#28a745',
+                            '#dc3545'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#e2e2e2'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Update dashboard if user is logged in
+            if (currentUser) {
+                updateDashboard();
+            }
+        }
+
+        function retakeTest() {
+            document.getElementById('quizContainer').style.display = 'block';
+            document.getElementById('testResult').style.display = 'none';
+            currentQuestionIndex = 0;
+            selectedOption = null;
+            displayQuestion();
+            
+            // Reset timer
+            timeLeft = 300;
+            updateTimerDisplay();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function endTest() {
+            clearInterval(timerInterval);
+            closeModal('takeTestModal');
+        }
+
+        function updateTimer() {
+            timeLeft--;
+            updateTimerDisplay();
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                submitTest();
+            }
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Dashboard functions
+        function loadDashboard() {
+            if (!currentUser) return;
+            
+            document.getElementById('dashboardUserName').textContent = currentUser.name || currentUser.email;
+            updateDashboard();
+        }
+
+        function updateDashboard() {
+            if (!currentUser) return;
+            
+            const userResults = testResults.filter(result => result.userId === currentUser.id);
+            const testsTaken = userResults.length;
+            
+            document.getElementById('userTestsTaken').textContent = testsTaken;
+            
+            if (testsTaken > 0) {
+                const totalScore = userResults.reduce((sum, result) => sum + result.score, 0);
+                const avgScore = Math.round(totalScore / testsTaken);
+                const highestScore = Math.max(...userResults.map(result => result.score));
+                
+                document.getElementById('userAverageScore').textContent = `${avgScore}%`;
+                document.getElementById('userHighestScore').textContent = `${highestScore}%`;
+                
+                // Update streak (random for demo)
+                document.getElementById('userStreak').textContent = Math.floor(Math.random() * 10) + 1;
+                
+                // Update activity list
+                const activityList = document.getElementById('userActivityList');
+                activityList.innerHTML = '';
+                
+                // Show last 5 results
+                userResults.slice(-5).reverse().forEach(result => {
+                    const activityItem = document.createElement('div');
+                    activityItem.className = 'item';
+                    activityItem.innerHTML = `
+                        <div>
+                            <strong>${result.testName}</strong>
+                            <p><small>${new Date(result.date).toLocaleDateString()}</small></p>
+                            <p>Score: ${result.score}% (${result.correctAnswers}/${result.totalQuestions})</p>
+                        </div>
+                        <button class="btn-small btn-view" onclick="viewTestResult('${result.id}')">Details</button>
+                    `;
+                    activityList.appendChild(activityItem);
+                });
+                
+                // Update recommended tests
+                const recommendedTests = document.getElementById('recommendedTests');
+                recommendedTests.innerHTML = '';
+                
+                // Get subjects from user's test history
+                const userSubjects = {};
+                userResults.forEach(result => {
+                    const test = tests.find(t => t.id === result.testId);
+                    if (test) {
+                        userSubjects[test.subject] = (userSubjects[test.subject] || 0) + 1;
+                    }
+                });
+                
+                // Find least tested subject
+                let leastTestedSubject = 'math';
+                let minCount = Infinity;
+                for (const [subject, count] of Object.entries(userSubjects)) {
+                    if (count < minCount) {
+                        minCount = count;
+                        leastTestedSubject = subject;
+                    }
+                }
+                
+                // Recommend tests from least tested subject
+                const recommended = tests.filter(test => test.subject === leastTestedSubject).slice(0, 3);
+                
+                if (recommended.length === 0) {
+                    recommendedTests.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #e2e2e2;">No recommendations available.</p>';
+                    return;
+                }
+                
+                recommended.forEach(test => {
+                    const testCard = document.createElement('div');
+                    testCard.className = 'test-card';
+                    testCard.innerHTML = `
+                        <span class="test-icon">${getSubjectIcon(test.subject)}</span>
+                        <h3>${test.name}</h3>
+                        <p>${test.subject.charAt(0).toUpperCase() + test.subject.slice(1)} - ${test.category}</p>
+                        <div class="test-meta">
+                            <span>Questions: ${test.questions.length}</span>
+                            <span class="difficulty ${test.difficulty}">${test.difficulty}</span>
+                        </div>
+                        <button class="subject-button" onclick="startTest('${test.id}')">Start Test</button>
+                    `;
+                    recommendedTests.appendChild(testCard);
+                });
+            }
+        }
+
+        function viewTestResult(resultId) {
+            const result = testResults.find(r => r.id === resultId);
+            if (!result) return;
+            
+            const test = tests.find(t => t.id === result.testId);
+            if (!test) return;
+            
+            const modalContent = `
+                <div class="modal-header">
+                    <h2>Test Result: ${test.name}</h2>
+                    <span class="close" onclick="closeModal('resultModal')">&times;</span>
+                </div>
+                <div style="padding: 1rem; color: white;">
+                    <div class="result-card">
+                        <div class="score-circle" style="--score: ${result.score}%;">
+                            <span class="score-text">${result.score}%</span>
+                        </div>
+                        <p>You answered ${result.correctAnswers} out of ${result.totalQuestions} questions correctly.</p>
+                        <p>Date: ${new Date(result.date).toLocaleDateString()}</p>
+                        <div class="chart-container" style="margin: 2rem 0;">
+                            <canvas id="detailedResultChart"></canvas>
+                        </div>
+                        <button class="subject-button" onclick="startTest('${test.id}'); closeModal('resultModal')">Retake Test</button>
+                    </div>
+                </div>
+            `;
+            
+            // Create or update modal
+            let modal = document.getElementById('resultModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'resultModal';
+                modal.className = 'modal';
+                document.body.appendChild(modal);
+            }
+            
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 600px;">
+                    ${modalContent}
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+            
+            // Create chart after modal is displayed
+            setTimeout(() => {
+                const ctx = document.getElementById('detailedResultChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Your Score', 'Class Average'],
+                        datasets: [{
+                            label: 'Score Comparison',
+                            data: [result.score, Math.floor(Math.random() * 20) + 70], // Random class average for demo
+                            backgroundColor: [
+                                '#00dbde',
+                                'rgba(255, 255, 255, 0.2)'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    color: '#e2e2e2'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: '#e2e2e2'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }, 100);
+        }
+
+        // Admin functions
+        function showAdminContent(contentId) {
+            document.querySelectorAll('.admin-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(contentId).classList.add('active');
+            
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            const activeTab = document.querySelector(`.admin-tab[onclick="showAdminContent('${contentId}')"]`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+            
+            // Load specific content if needed
+            if (contentId === 'manageUsers') {
+                loadAdminUsers();
+            }
+        }
+
+        function loadAdminData() {
+            if (!isAdmin) {
+                showSection('home');
+                return;
+            }
+            
+            // Update admin stats
+            document.getElementById('totalUsers').textContent = users.length;
+            document.getElementById('activeUsers').textContent = Math.floor(users.length * 0.3); // Random for demo
+            document.getElementById('testsCreated').textContent = tests.length;
+            document.getElementById('siteVisitors').textContent = visitorCount;
+            
+            loadAdminTests();
+            loadAdminNews();
+        }
+
+        function loadAdminUsers() {
+            const usersList = document.getElementById('usersList');
+            usersList.innerHTML = '';
+            
+            if (users.length === 0) {
+                usersList.innerHTML = '<p style="text-align: center; color: #e2e2e2;">No users registered yet.</p>';
+                return;
+            }
+            
+            users.forEach(user => {
+                const userItem = document.createElement('div');
+                userItem.className = 'item';
+                userItem.innerHTML = `
+                    <div>
+                        <strong>${user.name || user.email}</strong>
+                        <p><small>${user.email}</small></p>
+                        <p><small>Joined: ${new Date(user.joinDate).toLocaleDateString()}</small></p>
+                        <p><small>Role: ${user.role}</small></p>
+                    </div>
+                    <div class="item-actions">
+                        ${user.role !== 'admin' ? `<button class="btn-small btn-delete" onclick="deleteUser('${user.id}')">Delete</button>` : ''}
+                    </div>
+                `;
+                usersList.appendChild(userItem);
+            });
+        }
+
+        function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                users = users.filter(user => user.id !== userId);
+                localStorage.setItem('stemprep_users', JSON.stringify(users));
+                loadAdminUsers();
+                showAlert('adminUserAlert', 'User deleted successfully!', 'success');
+            }
+        }
+
+        // AI Assistant functions
+        function toggleAIChat() {
+            const chatbox = document.getElementById('aiChatbox');
+            chatbox.style.display = chatbox.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function sendAIMessage() {
+            const input = document.getElementById('aiInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            // Add user message to chat
+            addAIMessage(message, 'user');
+            input.value = '';
+            
+            // Simulate AI response
+            setTimeout(() => {
+                const responses = [
+                    "Great question! In STEM subjects, practice is key to mastering concepts.",
+                    "I recommend breaking down complex problems into smaller, manageable steps.",
+                    "For math problems, always double-check your calculations to avoid simple errors.",
+                    "Science concepts are often easier to understand with visual aids like diagrams.",
+                    "Coding challenges become easier with consistent practice and understanding patterns.",
+                    "For test preparation, focus on your weak areas first to maximize improvement."
+                ];
+                
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addAIMessage(randomResponse, 'bot');
+            }, 1000);
+        }
+
+        function addAIMessage(text, sender) {
+            const messagesContainer = document.getElementById('aiMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `ai-message ai-${sender}`;
+            messageDiv.textContent = text;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Utility functions
+        function showAlert(elementId, message, type) {
+            const alertElement = document.getElementById(elementId);
+            alertElement.textContent = message;
+            alertElement.className = `alert alert-${type}`;
+            alertElement.style.display = 'block';
+            
+            setTimeout(() => {
+                alertElement.style.display = 'none';
+            }, 3000);
+        }
+
+        function getSubjectIcon(subject) {
+            const icons = {
+                english: '📚',
+                math: '📐',
+                science: '🧬',
+                iq: '🧠',
+                coding: '💻',
+                history: '📜'
+            };
+            return icons[subject] || '❓';
+        }
+
+        function updateVisitorStats() {
+            // In a real app, this would be tracked server-side
+            const now = new Date();
+            const lastVisit = localStorage.getItem('stemprep_last_visit');
+            
+            // Only count as new visit if last visit was more than 30 minutes ago
+            if (!lastVisit || (now - new Date(lastVisit)) > 30 * 60 * 1000) {
+                visitorCount++;
+                localStorage.setItem('stemprep_visitor_count', visitorCount.toString());
+                document.getElementById('visitorCount').textContent = visitorCount;
+            }
+            
+            localStorage.setItem('stemprep_last_visit', now.toISOString());
+        }
+
+        // Expose functions to global scope
+        window.showSection = showSection;
+        window.openModal = openModal;
+        window.closeModal = function(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            const form = document.querySelector(`#${modalId} form`);
+            if (form) form.reset();
+        };
+        window.loadTests = loadTests;
+        window.loadAllTests = loadAllTests;
+        window.startTest = startTest;
+        window.selectOption = selectOption;
+        window.nextQuestion = nextQuestion;
+        window.prevQuestion = prevQuestion;
+        window.submitTest = submitTest;
+        window.retakeTest = retakeTest;
+        window.endTest = endTest;
+        window.showAdminContent = showAdminContent;
+        window.saveTest = saveTest;
+        window.editTest = editTest;
+        window.deleteTest = deleteTest;
+        window.saveNewsArticle = saveNewsArticle;
+        window.editNews = editNews;
+        window.deleteNews = deleteNews;
+        window.viewNewsArticle = viewNewsArticle;
+        window.viewTestResult = viewTestResult;
+        window.toggleAIChat = toggleAIChat;
+        window.sendAIMessage = sendAIMessage;
+        window.selectSubscription = selectSubscription;
+        window.addQuestionField = addQuestionField;
+        window.saveQuestion = saveQuestion;
+        window.editQuestion = editQuestion;
+        window.deleteQuestion = deleteQuestion;
+        
+    </script>
+</body>
+</html>
